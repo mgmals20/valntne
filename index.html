@@ -1,137 +1,246 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Will You Be My Valentine? ❤️</title>
+  <title>Quick Update</title> <!-- disguised title -->
+  <meta name="description" content="A quick page." />
 
   <style>
     :root{
-      --bg:#fff0f6;
+      --bg1:#fff0f6;
+      --bg2:#ffe3ef;
+      --bg3:#fff7fb;
       --accent:#d63384;
+      --accent2:#ff4d8d;
       --border:#ffd1e6;
+      --text:#2b2b2b;
+      --card:#ffffff;
     }
 
+    /* Animated gradient background */
     body{
       margin:0;
       min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background: radial-gradient(circle at top, #ffffff 0%, var(--bg) 55%, #ffe3ef 100%);
+      display:grid;
+      place-items:center;
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      color:var(--text);
+      overflow:hidden;
+      background: linear-gradient(120deg, var(--bg1), var(--bg2), var(--bg3));
+      background-size: 200% 200%;
+      animation: bgMove 10s ease-in-out infinite;
       padding:24px;
-      text-align:center;
     }
 
+    @keyframes bgMove{
+      0%{ background-position: 0% 50%; }
+      50%{ background-position: 100% 50%; }
+      100%{ background-position: 0% 50%; }
+    }
+
+    /* floating hearts layer */
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -40px;
+      opacity: 0.0;
+      filter: drop-shadow(0 8px 10px rgba(214,51,132,.12));
+      animation: floatUp linear forwards;
+    }
+
+    @keyframes floatUp{
+      0%   { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+      10%  { opacity: .55; }
+      100% { transform: translateY(-120vh) translateX(var(--drift)) rotate(360deg); opacity: 0; }
+    }
+
+    /* Card */
     .card{
-      width:min(760px,100%);
-      background:white;
-      border:2px solid var(--border);
-      border-radius:18px;
-      padding:22px;
-      box-shadow:0 18px 45px rgba(214,51,132,.18);
+      position: relative;
+      z-index: 2;
+      width:min(820px, 100%);
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(8px);
+      border: 2px solid var(--border);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow:
+        0 22px 60px rgba(214,51,132,.18),
+        inset 0 0 0 1px rgba(255,255,255,.65);
+      transform: translateY(0);
+      transition: transform .25s ease, box-shadow .25s ease;
     }
 
-    img{
-      width:100%;
-      height:auto;
-      border-radius:14px;
-      box-shadow:0 10px 25px rgba(0,0,0,.12);
-      margin-bottom:18px;
+    .card:hover{
+      transform: translateY(-2px);
+      box-shadow:
+        0 26px 70px rgba(214,51,132,.22),
+        inset 0 0 0 1px rgba(255,255,255,.75);
     }
 
+    /* Polaroid photo frame */
+    .polaroid{
+      background: #fff;
+      border-radius: 18px;
+      padding: 14px 14px 20px;
+      box-shadow: 0 16px 35px rgba(0,0,0,.14);
+      transform: rotate(-1.2deg);
+      margin-bottom: 18px;
+      border: 1px solid rgba(0,0,0,.06);
+    }
+
+    .polaroid img{
+      width: 100%;
+      height: auto;
+      border-radius: 14px;
+      display:block;
+    }
+
+    .tape{
+      position:absolute;
+      width: 110px;
+      height: 34px;
+      background: rgba(255, 230, 242, .85);
+      border: 1px solid rgba(214,51,132,.12);
+      box-shadow: 0 10px 18px rgba(0,0,0,.08);
+      border-radius: 8px;
+      z-index: 3;
+    }
+    .tape.left{ top: 12px; left: 24px; transform: rotate(-12deg); }
+    .tape.right{ top: 12px; right: 24px; transform: rotate(10deg); }
+
+    /* Headline + typewriter caret */
     h1{
-      margin:0 0 10px;
-      color:var(--accent);
-      font-size:clamp(1.7rem,3vw,2.3rem);
+      margin: 0 0 10px;
+      color: var(--accent);
+      font-size: clamp(1.65rem, 3vw, 2.25rem);
+      letter-spacing: .2px;
     }
+    .type{
+      display:inline-block;
+      border-right: 3px solid rgba(214,51,132,.65);
+      padding-right: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      animation: caret 1s step-end infinite;
+      max-width: 100%;
+    }
+    @keyframes caret { 50% { border-color: transparent; } }
 
     p{
       margin:0 0 14px;
-      font-size:1.05rem;
-      line-height:1.45;
+      font-size: 1.06rem;
+      line-height: 1.5;
     }
 
     .buttons{
       display:flex;
       gap:12px;
       justify-content:center;
+      flex-wrap:wrap;
+      margin-top: 8px;
     }
 
     button{
       border:none;
       border-radius:999px;
-      padding:12px 18px;
-      font-weight:700;
+      padding: 12px 18px;
+      font-weight: 800;
       cursor:pointer;
-      font-size:1rem;
-      transition:transform .06s ease;
+      font-size: 1rem;
+      transition: transform .08s ease, box-shadow .2s ease, filter .2s ease;
+      box-shadow: 0 10px 24px rgba(0,0,0,.10);
     }
 
-    button:active{ transform:scale(.98); }
-    .yes{ background:var(--accent); color:white; }
-    .also{ background:#ffe0ef; color:#7a123f; }
+    .yes{
+      color:white;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      animation: pulse 1.8s ease-in-out infinite;
+    }
 
-    #replyMessage{
-      margin-top:14px;
-      font-weight:700;
+    @keyframes pulse{
+      0%,100% { transform: translateY(0); }
+      50%     { transform: translateY(-1px); }
+    }
+
+    .yes:hover{ filter: brightness(1.04); }
+    .also{
+      background: #ffe0ef;
+      color: #7a123f;
+    }
+    button:active{ transform: scale(.98); }
+
+    #reply{
+      margin-top: 14px;
+      font-weight: 800;
       color:#7a123f;
-      min-height:1.5rem;
+      min-height: 1.6em;
+    }
+
+    .small{
+      margin-top: 10px;
+      font-size: .86rem;
+      color: rgba(0,0,0,.55);
+    }
+
+    /* Reduced motion accessibility */
+    @media (prefers-reduced-motion: reduce){
+      body{ animation: none; }
+      .yes{ animation: none; }
+      .heart{ animation: none; display:none; }
+      .type{ border-right: none; animation:none; }
     }
   </style>
 </head>
 
 <body>
-  <div class="card">
+  <div class="hearts" id="hearts"></div>
 
-    <!-- Your couple photo (same folder) -->
-    <img src="photo.jpg" alt="Our photo" />
+  <div class="card" role="main" aria-label="Card">
+    <div class="tape left"></div>
+    <div class="tape right"></div>
 
-    <h1>Vishal, will you be my Valentine? ❤️</h1>
+    <div class="polaroid" title="Click for a tiny surprise">
+      <img src="photo.jpg" alt="Our photo" id="photo">
+    </div>
+
+    <h1><span class="type" id="typeTarget"></span></h1>
 
     <p>
       I choose you — today, tomorrow, always.<br>
-      <strong>Love, Your Wifey</strong>
+      <strong>Love, Malavika</strong>
     </p>
 
     <div class="buttons">
-      <button class="yes" onclick="reply('Yay! 💖 Date night is ON!')">Yes 💘</button>
-      <button class="also" onclick="reply('I knew it 😘 I love you!')">Also yes 😄</button>
+      <button class="yes" id="yesBtn">Yes 💘</button>
+      <button class="also" id="alsoBtn">Also yes 😄</button>
     </div>
 
-    <div id="replyMessage"></div>
-
+    <div id="reply" aria-live="polite"></div>
+    <div class="small">P.S. This is just a quick link 😉</div>
   </div>
 
   <script>
-    function reply(msg){
-      const box = document.getElementById('replyMessage');
-      box.textContent = msg;
-      makeHearts();
+    // ---- Typewriter text (change names/message here) ----
+    const headline = "Vishal, will you be my Valentine? ❤️";
+    const target = document.getElementById("typeTarget");
+    let i = 0;
+    function typeNext(){
+      target.textContent = headline.slice(0, i++);
+      if(i <= headline.length) setTimeout(typeNext, 45);
     }
+    typeNext();
 
-    function makeHearts(){
-      for(let i=0;i<22;i++){
-        const h = document.createElement("span");
-        h.textContent = Math.random() > 0.5 ? "💗" : "💖";
-        h.style.position = "fixed";
-        h.style.left = (Math.random()*100) + "vw";
-        h.style.top = "-20px";
-        h.style.fontSize = (16 + Math.random()*20) + "px";
-        h.style.transition = "transform 1.7s ease, opacity 1.7s ease";
-        h.style.zIndex = 9999;
-        document.body.appendChild(h);
-
-        requestAnimationFrame(()=>{
-          h.style.transform = `translateY(${120+Math.random()*40}vh) rotate(${Math.random()*360}deg)`;
-          h.style.opacity = "0";
-        });
-
-        setTimeout(()=>h.remove(),1700);
-      }
-    }
-  </script>
-
-</body>
-</html>
+    // ---- Floating hearts background (lightweight) ----
+    const hearts = document.getElementById("hearts");
+    const emojis = ["💗","💖","💕","💘"];
+    function spawnHeart(){
+      const h = document.createElement("div");
