@@ -244,3 +244,70 @@
     const emojis = ["💗","💖","💕","💘"];
     function spawnHeart(){
       const h = document.createElement("div");
+      h.className = "heart";
+      h.textContent = emojis[(Math.random()*emojis.length)|0];
+      const size = 14 + Math.random()*22;
+      const left = Math.random()*100;
+      const drift = (Math.random()*80 - 40).toFixed(0) + "px";
+      const dur = (7 + Math.random()*6).toFixed(2) + "s";
+      const delay = (Math.random()*1.5).toFixed(2) + "s";
+
+      h.style.left = left + "vw";
+      h.style.fontSize = size + "px";
+      h.style.setProperty("--drift", drift);
+      h.style.animationDuration = dur;
+      h.style.animationDelay = delay;
+
+      hearts.appendChild(h);
+      setTimeout(() => h.remove(), (parseFloat(dur)+parseFloat(delay)+0.2)*1000);
+    }
+    setInterval(spawnHeart, 520);
+    for(let k=0;k<8;k++) spawnHeart();
+
+    // ---- Confetti burst for button clicks (better burst) ----
+    function burstConfetti(){
+      for(let n=0;n<30;n++){
+        const s = document.createElement("span");
+        s.textContent = (Math.random() > 0.5) ? "💗" : "💖";
+        s.style.position="fixed";
+        s.style.left=(Math.random()*100)+"vw";
+        s.style.top=(30+Math.random()*30)+"vh";
+        s.style.fontSize=(14+Math.random()*18)+"px";
+        s.style.zIndex=9999;
+        s.style.transition="transform 1.4s ease, opacity 1.4s ease";
+        document.body.appendChild(s);
+
+        const dx = (Math.random()*600 - 300);
+        const dy = (Math.random()*450 - 120);
+        const rot = (Math.random()*720 - 360);
+        requestAnimationFrame(()=>{
+          s.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg)`;
+          s.style.opacity = "0";
+        });
+        setTimeout(()=> s.remove(), 1450);
+      }
+    }
+
+    const reply = document.getElementById("reply");
+    document.getElementById("yesBtn").addEventListener("click", () => {
+      reply.textContent = "💖 Yay, I LOVE YOU";
+      burstConfetti();
+    });
+
+    document.getElementById("alsoBtn").addEventListener("click", () => {
+      reply.textContent = "I knew it 😘 I love you more!";
+      burstConfetti();
+    });
+
+    // ---- Tiny easter egg: click photo 5 times ----
+    let taps = 0;
+    document.getElementById("photo").addEventListener("click", () => {
+      taps++;
+      if(taps === 5){
+        reply.textContent = "Secret message: you’re my forever ❤️";
+        burstConfetti();
+      }
+    });
+  </script>
+</body>
+</html>
